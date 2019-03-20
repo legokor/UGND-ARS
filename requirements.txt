@@ -1,2 +1,2 @@
-pySerial
+pyserial-asyncio
 websockets
