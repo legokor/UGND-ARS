@@ -52,6 +52,11 @@ async def recv_from_websocket(websocket, serial_writer):
     async for msg in websocket:
         print(f'Received from websocket: {msg}')
 
+async def keep_alive(websocket):
+    while True:
+        websocket.ping()
+        await asyncio.sleep(5)
+
 
 async def main():
     async with websockets.connect('ws://'+sys.argv[1]) as ws:
@@ -65,7 +70,8 @@ async def main():
 
         await asyncio.gather(
             recv_from_serial(ws, serial_reader),
-            recv_from_websocket(ws, serial_writer)
+            recv_from_websocket(ws, serial_writer),
+            keep_alive(ws)
         )
 
 asyncio.run(main())
