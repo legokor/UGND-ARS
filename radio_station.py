@@ -26,11 +26,19 @@ station_lat = None
 station_lng = None
 station_alt = None
 
+def input_type(msg, type_converter):
+    while True:
+        s = raw_input(msg)
+        try :
+            return type_converter(s)
+        except ValueError as e:
+            print(e)
+
 async def setup_location(websocket):
     print('Station location setup')
-    station_lat = input('Station latitude: ')
-    station_lng = input('Station longitude: ')
-    station_alt = input('Station altitude: ')
+    station_lat = input_type('Station latitude: ', float)
+    station_lng = input_type('Station longitude: ', float)
+    station_alt = input_type('Station altitude: ', int)
     await websocket.send(json.dumps({
         'type': 'location.ars',
         'lat': station_lat
