@@ -22,6 +22,22 @@ UPRA_TLMPACKET_FMT = (
     r'(?P<comtemp>.{3}),'
 )
 
+station_lat = None
+station_lng = None
+station_alt = None
+
+async def setup_location(websocket):
+    print('Station location setup')
+    station_lat = input('Station latitude: ')
+    station_lng = input('Station longitude: ')
+    station_alt = input('Station altitude: ')
+    await websocket.send(json.dumps({
+        'type': 'location.ars',
+        'lat': station_lat
+        'lng': station_lng
+        'alt': station_alt
+    }))
+
 async def pick_mission(websocket):
     await websocket.send(json.dumps({
         'type': 'mission.list.get'
@@ -62,6 +78,7 @@ async def main():
     async with websockets.connect('ws://'+sys.argv[1]) as ws:
         print('Connected to ws://'+sys.argv[1])
 
+        await setup_location(ws)
         await pick_mission(ws)
 
         serial_reader, serial_writer = await serial_asyncio.open_serial_connection(url=sys.argv[2], baudrate=int(sys.argv[3]))
