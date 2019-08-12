@@ -12,22 +12,6 @@ import websockets.exceptions
 
 E_RADIUS = 6371000
 
-UPRA_TLMPACKET_FMT = (
-    r'\$\$(?P<csgn>.{7}),'
-    r'(?P<msgid>.{3}),'
-    r'(?P<hours>.{2})'
-    r'(?P<mins>.{2})'
-    r'(?P<secs>.{2}),'
-    r'(?P<lat>[+-]?.{2})'
-    r'(?P<latmins>.{2}\..{3}),'
-    r'(?P<lng>[+-]?.{3})'
-    r'(?P<lngmins>.{2}\..{3}),'
-    r'(?P<alt>.{5}),'
-    r'(?P<exttemp>.{4}),'
-    r'(?P<obctemp>.{3}),'
-    r'(?P<comtemp>.{3}),'
-)
-
 DEFAULT_LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -194,7 +178,7 @@ class BaseRadioStation():
     async def parse_gnd_packet(self, packet):
         """
         Parse a raw packet string received from lower level GND equipment.
-        Should be overrided by derived classes implementing concrete radio stations,
+        Should be overrided by derived classes implementing actual radio stations,
         which have knowledge about the packet formats they will receive.
         Parsed data can be sent as typed valid UGND messages using send_to_mcs()
         """
@@ -294,7 +278,7 @@ class BaseRadioStation():
             self.keep_listening_from_gnd()
         )
 
-    def run_station(self):
+    def run(self):
         asyncio.run(self.run_station_async())
 
 
