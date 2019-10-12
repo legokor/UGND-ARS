@@ -20,6 +20,12 @@ UPRA_TLMPACKET_FMT = (
     r'(?P<comtemp>.{3}),'
 )
 
+def parse_degrees(degrees_str, mins_str):
+    degrees = float(degrees_str)
+    mins = float(mins_str)/60.0
+    degrees += mins * (-1 if degrees < 0 else 1)
+    return degrees
+
 class UpraRadioStation(SerialConnectorRadioStation):
     def __init__(self, mcs_addr, port, baud):
         super().__init__(mcs_addr, port, baud)

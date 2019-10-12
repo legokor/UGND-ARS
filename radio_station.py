@@ -184,7 +184,7 @@ class BaseRadioStation():
         """
         raise NotImplementedError
 
-    async def calc_rotation_for_hab(hab_lat, hab_lng, hab_alt):
+    async def calc_rotation_for_hab(self, hab_lat, hab_lng, hab_alt):
         """
         Compute antenna rotation using received location of a tracked high altitude balloon
         """
